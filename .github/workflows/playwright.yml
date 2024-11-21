@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Playwright Test Run
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
 
       
       - name: Install dependencies
@@ -32,7 +32,7 @@ jobs:
         run: npx playwright test --reporter=html
 
       - name: Upload Test Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: Test Results
           path: playwright-report
