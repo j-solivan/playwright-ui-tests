@@ -40,43 +40,55 @@ export class AllModelsPage {
         return await this.searchResults.count();
     }
 
-    async setHomeFilter(filterName: string): Promise<number> {
+    async setHomeFilter(filterName: string) {
         const sectionFilter = this.page.getByRole('link', { name: filterName, exact: true });
         await sectionFilter.click();
         await this.verifyFilterEnabled(sectionFilter);
-        return await this.getSearchResultsCount();
     }
 
     async selectFilter(filterLocator: Locator): Promise<void> {
-        await this.page.waitForLoadState('load');
-        await filterLocator.click();
-        await this.page.waitForLoadState('load');
+        await this.page.waitForLoadState('load')
+        await expect(async () => {
+            await filterLocator.click();
+        }).toPass({ timeout: 15000 });
     }
 
-    async setMonthlyPaymentFilter(minPayment: string, maxPayment: string): Promise<number> {
-        await this.selectFilter(this.page.locator('button').filter({ hasText: '$500' }));
-        await this.selectFilter(this.page.getByRole('link', { name: `$${minPayment} /m` }));
-        await this.selectFilter(this.page.locator('button').filter({ hasText: '$2700' }));
-        await this.selectFilter(this.page.getByRole('link', { name: `$${maxPayment} /m` }));
-        return await this.getSearchResultsCount();
+    async setMonthlyPaymentFilter(minPayment: string, maxPayment: string): Promise<void> {
+        const minPaymentLocator = this.page.locator(`//span[contains(text(), '$${minPayment} /m')]`).nth(0);
+        const maxPaymentLocator = this.page.locator(`//span[contains(text(), '$${maxPayment} /m')]`).nth(1);
+        const lowButtonLocator = this.page.locator('button').filter({ hasText: '$500' }).first();
+        const highButtonLocator = this.page.locator('button').filter({ hasText: '$2700' }).first();
+    
+        await this.selectFilter(lowButtonLocator);
+        await this.selectFilter(minPaymentLocator);
+        await this.selectFilter(highButtonLocator);
+        await this.selectFilter(maxPaymentLocator);
     }
-
-    async setSquareFootFilter(minSqft: string, maxSqft: string): Promise<number> {
-        await this.selectFilter(this.page.locator('button').filter({ hasText: '400 /ft2' }));
-        await this.selectFilter(this.page.getByRole('link', { name: `${minSqft} /ft2`, exact: true }));
-        await this.selectFilter(this.page.locator('button').filter({ hasText: '2500 /ft2' }));
-        await this.selectFilter(this.page.getByRole('link', { name: `${maxSqft} /ft2`, exact: true }));
-        return await this.getSearchResultsCount();
+    
+    async setSquareFootFilter(minSqft: string, maxSqft: string): Promise<void> {
+        const lowButtonLocator = this.page.locator('button').filter({ hasText: '400 /ft2' });
+        const minSqftLocator = this.page.locator(`//span[contains(text(), '${minSqft} /ft2')]`).nth(0);
+        const highButtonLocator = this.page.locator('button').filter({ hasText: '2500 /ft2' });
+        const maxSqftLocator = this.page.locator(`//span[contains(text(), '${maxSqft} /ft2')]`).nth(1);
+    
+        await this.selectFilter(lowButtonLocator);
+        await this.selectFilter(minSqftLocator);
+        await this.selectFilter(highButtonLocator);
+        await this.selectFilter(maxSqftLocator);
     }
-
-    async setDimensionsFilter(maxWidth: string, maxLength: string): Promise<number> {
-        await this.selectFilter(this.page.locator('button').filter({ hasText: '32 ft' }));
-        await this.selectFilter(this.page.getByRole('link', { name: `${maxWidth} ft`, exact: true }));
-        await this.selectFilter(this.page.locator('button').filter({ hasText: '80 ft' }));
-        await this.selectFilter(this.page.getByRole('link', { name: `${maxLength} ft`, exact: true }));
-        return await this.getSearchResultsCount();
+    
+    async setDimensionsFilter(maxWidth: string, maxLength: string): Promise<void> {
+        const widthButtonLocator = this.page.locator('button').filter({ hasText: '32 ft' });
+        const maxWidthLocator = this.page.locator(`//span[contains(text(), '${maxWidth} ft')]`).first();
+        const lengthButtonLocator = this.page.locator('button').filter({ hasText: '80 ft' });
+        const maxLengthLocator = this.page.locator(`//span[contains(text(), '${maxLength} ft')]`).first();
+    
+        await this.selectFilter(widthButtonLocator);
+        await this.selectFilter(maxWidthLocator);
+        await this.selectFilter(lengthButtonLocator);
+        await this.selectFilter(maxLengthLocator);
     }
-
+    
     async selectBedrooms(bedrooms: string): Promise<number> {
         const bedroomFilter = this.page.locator(
             `//span[normalize-space()='Bedrooms']/following-sibling::div//a[contains(@href, 'bedroomCount=${bedrooms}')]`
@@ -107,8 +119,6 @@ export class AllModelsPage {
         return await this.getSearchResultsCount();
     }
 
-  
-
     private async verifyFilterEnabled(filter: Locator) {
         await expect(async () => {
             await expect(filter).toHaveCSS('border-color', 'rgb(0, 149, 250)');
@@ -118,7 +128,6 @@ export class AllModelsPage {
     }
 
     async assertNoResults(): Promise<void> {
-        await this.page.waitForLoadState('load');
         await expect(async () => {
             await this.page.waitForSelector('text=No items match your filters');
             await expect(this.noResultsMessage).toBeVisible();
@@ -126,10 +135,12 @@ export class AllModelsPage {
         }).toPass({ timeout: 8000 });
     }
 
-    async waitForUpdatedResults(initialResults: number){
+    async waitForUpdatedResults(initialResults: number): Promise<void> {
         await expect(async () => {
-            await this.page.getByText(new RegExp(`^${initialResults} Home(s)?$`)).waitFor({ state: 'detached' });
-            ({ timeout: 10000 });
+            const updatedResults = await this.getSearchResultsCount();
+            if (updatedResults === initialResults) {
+                throw new Error('Results count did not update');
+            }
         }).toPass({ timeout: 15000 });
     }
 }

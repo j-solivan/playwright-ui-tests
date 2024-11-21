@@ -14,22 +14,21 @@ import invalidCombinations from '@data/invalid-filters.json';
     test('Filter by sections & reset filters', async ({ page, allModelsPage }) => {
       const initialResults = await allModelsPage.getSearchResultsCount();
       const initialHomesText = page.getByText(new RegExp(`^${initialResults} Home(s)?$`));
-  
       await expect(initialHomesText).toBeVisible();
   
-      const expectedFilteredCount = await allModelsPage.setHomeFilter('Single');
+      await allModelsPage.setHomeFilter('Single');
+
       await expect(initialHomesText).not.toBeVisible();
+
       await allModelsPage.waitForUpdatedResults(initialResults);
-  
-      await expect(allModelsPage.searchResults).toHaveCount(expectedFilteredCount);
       await expect(allModelsPage.searchResults).not.toHaveCount(initialResults);
-  
       await page.waitForURL(/sectionCount=1/);
   
       await allModelsPage.resetFilters();
       await expect(page.getByText(new RegExp(`^${initialResults} Home(s)?$`))).toBeVisible();
   
       await allModelsPage.setHomeFilter('Multi');
+
       await allModelsPage.waitForUpdatedResults(initialResults);
       const filteredResultsMulti = await allModelsPage.getSearchResultsCount();
       expect(filteredResultsMulti).toBeLessThanOrEqual(initialResults);
@@ -42,11 +41,11 @@ import invalidCombinations from '@data/invalid-filters.json';
   
       await expect(initialHomesText).toBeVisible();
   
-      const expectedFilteredCount = await allModelsPage.setHomeFilter('Oak Creek');
+      await allModelsPage.setHomeFilter('Oak Creek');
       await expect(initialHomesText).not.toBeVisible();
       await allModelsPage.waitForUpdatedResults(initialResults);
   
-      await expect(allModelsPage.searchResults).toHaveCount(expectedFilteredCount);
+      
       await expect(allModelsPage.searchResults).not.toHaveCount(initialResults);
   
       await page.waitForURL(/manufacturer=oak-creek/);
@@ -79,22 +78,24 @@ import invalidCombinations from '@data/invalid-filters.json';
     });
   
     test('Out of range filtering returns no results', async ({ page, allModelsPage }) => {
-        await allModelsPage.searchModelByName('Clayton');
-        await expect(allModelsPage.searchResults).toHaveCount(50)
-        await expect(allModelsPage.searchResults.first()).toContainText('Clayton');
-        const initialResults = await allModelsPage.getSearchResultsCount();
-        const initialHomesText = page.getByText(new RegExp(`^${initialResults} Home(s)?$`));
-        await expect(initialHomesText).toBeVisible();
+      await allModelsPage.searchModelByName('Clayton');
   
-        const expectedFilteredCount = await allModelsPage.setMonthlyPaymentFilter('1800', '2500');
-        
-        await page.waitForLoadState('load');
+      // Wait for the initial results to appear
+      await expect(allModelsPage.searchResults).toHaveCount(50);
+      await expect(allModelsPage.searchResults.first()).toContainText('Clayton');
+  
+      const initialResults = await allModelsPage.getSearchResultsCount();
+  
+      const initialHomesText = page.getByText(new RegExp(`^${initialResults} Home(s)?$`));
+      await expect(initialHomesText).toBeVisible();
+  
 
-        await expect(initialHomesText).not.toBeVisible();
-        await allModelsPage.waitForUpdatedResults(initialResults);
-        
-        
-        await allModelsPage.assertNoResults();
+      await allModelsPage.setMonthlyPaymentFilter('1800', '2500');
+
+      await expect(initialHomesText).not.toBeVisible();
+      await allModelsPage.waitForUpdatedResults(initialResults);
+
+      await allModelsPage.assertNoResults();
     });
   });
   
@@ -120,6 +121,8 @@ import invalidCombinations from '@data/invalid-filters.json';
   
         const filteredResults = await allModelsPage.getSearchResultsCount();
         expect(filteredResults).toBeLessThanOrEqual(initialResults);
+        await page.waitForURL(new RegExp(`bedroomCount=${bedroom.value}&bathroomCount=${bathroom.value}`));
+
       });
     }
   });
@@ -145,6 +148,7 @@ import invalidCombinations from '@data/invalid-filters.json';
         await allModelsPage.waitForUpdatedResults(initialResults);
   
         await allModelsPage.assertNoResults();
+        await page.waitForURL(new RegExp(`bedroomCount=${bedroom.value}&bathroomCount=${bathroom.value}`));
       });
     }
   });

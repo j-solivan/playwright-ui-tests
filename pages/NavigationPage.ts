@@ -7,12 +7,12 @@ export class NavigationPage {
         this.page = page;
     }
 
-    async navigateToPage(path: string) {
+    async navigateToPage(path: string): Promise<void> {
         await this.page.goto(path);
         await this.page.waitForLoadState();
     }
 
-    async hoverOverNavButton(buttonName: string) {
+    async hoverOverNavButton(buttonName: string): Promise<void> {
         await this.page.getByRole('button', { name: buttonName, exact: true }).first().hover();
 
         const locator: Locator = this.page.locator('#header').getByLabel('Link to home page');
@@ -23,7 +23,7 @@ export class NavigationPage {
     }
 
     // Validate that sublinks are visible
-    async validateSublinksVisible(expectedLinks: string[]) {
+    async validateSublinksVisible(expectedLinks: string[]): Promise<void> {
         
         for (const link of expectedLinks) {
             const locator: Locator = this.page.locator(`a[href="${link}"]:visible`).first();
