@@ -20,10 +20,10 @@ Running Tests
 
 Run All Tests:  npx playwright test
 
-Run a Specific Test:
+Run a Specific Test: Mark the test as test.only
 
 
-npx playwright test tests/<test-file-name>.spec.ts
+Run a Specific test Spec:  npx playwright test tests/<test-file-name>.spec.ts
 
 Run in Headed Mode:  npx playwright test --headed
 
@@ -41,4 +41,10 @@ tests/: Contains test files.
 data/: Test data 
 pages/: Page objects, reusable methods and common page actions
 fixtures/: This module extends Playwright's base test to include custom page objects for improved modularity and reusability.
+
+There is a workflow configure with GitHub Actions to run the test on merge to master
+
+Additionally, a run may be triggered via the UI
+
+The reports (test results) will be placed in the artifacts section of the run-playwright-test action
 
