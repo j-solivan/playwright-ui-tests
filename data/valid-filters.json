@@ -1,0 +1,74 @@
+[
+    {
+        "bedroom": {
+            "value": "1"
+        },
+        "bathroom": {
+            "value": "1"
+        }
+    },
+    {
+        "bedroom": {
+            "value": "2"
+        },
+        "bathroom": {
+            "value": "1"
+        }
+    },
+    {
+        "bedroom": {
+            "value": "2"
+        },
+        "bathroom": {
+            "value": "2"
+        }
+    },
+    {
+        "bedroom": {
+            "value": "3"
+        },
+        "bathroom": {
+            "value": "2"
+        }
+    },
+    {
+        "bedroom": {
+            "value": "3"
+        },
+        "bathroom": {
+            "value": "3"
+        }
+    },
+    {
+        "bedroom": {
+            "value": "4"
+        },
+        "bathroom": {
+            "value": "2"
+        }
+    },
+    {
+        "bedroom": {
+            "value": "4"
+        },
+        "bathroom": {
+            "value": "3"
+        }
+    },
+    {
+        "bedroom": {
+            "value": "5"
+        },
+        "bathroom": {
+            "value": "2"
+        }
+    },
+    {
+        "bedroom": {
+            "value": "5"
+        },
+        "bathroom": {
+            "value": "3"
+        }
+    }
+]

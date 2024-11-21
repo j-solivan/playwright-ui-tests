@@ -1,0 +1,40 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Playwright-specific artifacts
+test-results/
+playwright-report/
+trace.zip
+videos/
+screenshots/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+*.log.*
+debug.log
+
+# IDE/Editor-specific files
+.vscode/
+.idea/
+*.iml
+
+# Output directories
+dist/
+build/
+
+# Miscellaneous
+*.swp
+*.swo
+*.bak
+*.tmp

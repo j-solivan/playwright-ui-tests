@@ -1,0 +1,33 @@
+{
+    "Homes": {
+      "sublinks": {
+        "/shop/all-models": "Shop mobile homes in Texas, Oklahoma, New Mexico",
+        "/shop/inventory": "Shop mobile homes in Texas, Oklahoma, New Mexico",
+        "/shop/land-home": "Shop mobile homes in Texas, Oklahoma, New Mexico",
+        "/shop/homes-on-sale": "Shop mobile homes in Texas, Oklahoma, New Mexico",
+        "/shop/saved-homes": "Shop mobile homes in Texas"
+      }
+    },
+    "About": {
+      "sublinks": {
+        "/about": "The Braustin Story",
+        "/customer-stories": "Customer Stories",
+        "/locations": "Braustin Homes Dealership Locations"
+      }
+    },
+    "Learn": {
+      "sublinks": {
+        "/blog": "All Posts",
+        "/academy": "Welcome to Braustin Academy",
+        "/podcast": "Top Episodes",
+        "/frequently-asked-questions": "FAQs",
+        "/braustin-scholars": "Braustin Scholars"
+      }
+    },
+    "DirectLinks": {
+      "/contact-us": "Contact Us",
+      "/commercial-account-management": "Commercial Account Management",
+      "/mobile-home-skirting-quote": "Mobile Home Skirting"
+    }
+  }
+  

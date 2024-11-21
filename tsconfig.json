@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@pages/*": ["pages/*"], // Directly maps to the "pages" folder
+      "@data/*": ["data/*"],    // Directly maps to the "data" folder
+      "@fixtures/*": ["fixtures/*"]
+    },
+    "target": "ESNext",
+    "module": "CommonJS",
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "rootDir": "."   
+  },
+  "include": ["**/*.ts"], 
+  "exclude": ["node_modules", "dist"]
+}
